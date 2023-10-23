@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 14px;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.delete {
+  background-color: rgb(197, 52, 52);
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  color: white;
+  transition: 0.4s;
+  margin: 10px 5px;
+}
+.update {
+  background-color: rgb(214, 214, 214);
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  transition: 0.4s;
+  margin-left: 10px;
+}
+
+.delete:hover {
+  background-color: rgb(254, 124, 124);
+}
+
+.update:hover {
+  background-color: darkgrey;
+  color: white;
+}
+
+.add-update-button {
+  background-color: purple;
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  transition: 0.4s;
+  margin-left: 10px;
+  color: white;
+  transition: 0.4s;
+  margin-top: 10px;
+}
+
+.add-update-button:hover {
+  background-color: rgb(213, 3, 213);
+}
+
+.teste input {
+  width: 200px;
+  height: 30px;
+
+  border-radius: 20px;
+  border-color: lightgray;
+}

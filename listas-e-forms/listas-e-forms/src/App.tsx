@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './App.css'
 
 function App() {
   // Estado 'input' para a entrada do nome da tarefa
@@ -62,22 +63,22 @@ function App() {
 
   // Renderização da interface do aplicativo
   return (
-    <div>
+    <div className="container">
       <h1>Lista de Tarefas</h1>
-      <input
+      <div className="teste"> <input
         type="text"
         placeholder="Digite o nome da tarefa"
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
-      <button onClick={handleRegister}>{editTask.enable ? "Atualizar" : "Adicionar tarefa"}</button>
+      <button className="add-update-button"onClick={handleRegister}>{editTask.enable ? "Atualizar" : "Adicionar tarefa"}</button></div>
       <hr />
 
       {tasks.map((task, index) => (
         <section key={index}>
           <span>{task}</span>
-          <button onClick={() => handleEdit(task)}>Editar</button>
-          <button onClick={() => handleDelete(task)}>Excluir</button>
+          <button className="update"onClick={() => handleEdit(task)}>Editar</button>
+          <button className="delete"onClick={() => handleDelete(task)}>Excluir</button>
         </section>
       ))}
     </div>
