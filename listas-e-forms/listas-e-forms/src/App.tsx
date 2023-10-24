@@ -65,7 +65,7 @@ function App() {
   return (
     <div className="container">
       <h1>Lista de Tarefas</h1>
-      <div className="teste"> <input
+      <div className="input"> <input
         type="text"
         placeholder="Digite o nome da tarefa"
         value={input}
@@ -75,7 +75,7 @@ function App() {
       <hr />
 
       {tasks.map((task, index) => (
-        <section key={index}>
+        <section key={index} className="section">
           <span>{task}</span>
           <button className="update"onClick={() => handleEdit(task)}>Editar</button>
           <button className="delete"onClick={() => handleDelete(task)}>Excluir</button>
