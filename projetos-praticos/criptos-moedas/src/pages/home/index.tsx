@@ -24,9 +24,9 @@ export function Home() {
         <tbody id="tbody">
           <tr className={styles.tr}>
             <td className={styles.tdLabel}>
-              <Link to={"/detail/btc"}>
-                <span className={styles.link}>BitCoin</span>
-                <span>BitCoin</span>
+              <Link className={styles.link} to={"/detail/btc"}>
+                <span >BitCoin</span> | BTC
+              
               </Link>
             </td>
             <td className={styles.tdLabel}>R$ 1903,9</td>
