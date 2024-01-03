@@ -1,30 +1,84 @@
-import { Link } from "react-router-dom";
-import styles from "./home.module.css";
-import { BsSearchHeart } from "react-icons/bs";
-import { useEffect } from "react";
+import { FormEvent, useEffect, useState } from 'react'
+import styles from './home.module.css'
+import { BiSearch } from 'react-icons/bi'
+import { Link, useNavigate } from 'react-router-dom'
 
-// https://sujeitoprogramador.com/api-cripto/?key=67f9141787211428
+//https://coinlib.io/api/v1/coinlist?key=67f9141787211428
 
-export function Home() {
+
+interface CoinProps {
+  name: string;
+  delta_24h?: string;
+  price: string;
+  symbol: string;
+  volume_24h: string;
+  market_cap: string;
+  formatedPrice: string;
+  formatedMarket: string;
+  numberDelta: number;
+}
+
+interface DataProps{
+  coins: CoinProps[];
+}
+
+export function Home(){
+  const [coins, setCoins] = useState<CoinProps[]>([])
+  const [inputValue, setInputValue] = useState("")
+  const navigate = useNavigate();
+
   useEffect(() => {
-    function getData() {
-      fetch(
-        "https://sujeitoprogramador.com/api-cripto/?key=67f9141787211428&pref=BRL"
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        });
+    function getData(){
+      fetch('https://sujeitoprogramador.com/api-cripto/?key=b4cd8f8fb3de94c6')
+      .then(response => response.json())
+      .then((data: DataProps) => {
+        let coinsData = data.coins; 
+          console.log(coinsData)
+        let price = Intl.NumberFormat("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+        }); 
+
+        const formatResult = coinsData.map((item) => {
+          const formated = {
+            ...item,
+            formatedPrice: price.format(Number(item.price)),
+            formatedMarket: price.format(Number(item.market_cap)),
+            numberDelta: !!item.delta_24h  ? parseFloat(item.delta_24h.replace(",", ".")) : 0
+          }
+
+          return formated;
+        })
+
+        setCoins(formatResult)
+      })
+
     }
 
+
     getData();
-  }, []);
-  return (
+
+  }, [])
+
+
+  function handleSearch(e: FormEvent){
+    e.preventDefault();
+    if(inputValue === "") return;
+
+    navigate(`/detail/${inputValue}`)
+  
+  }
+
+  return(
     <main className={styles.container}>
-      <form className={styles.form}>
-        <input type="text" placeholder="Digite o símbolo da moeda" />
+      <form className={styles.form} onSubmit={handleSearch}>
+        <input
+          placeholder="Digite o simbolo da moeda: BTC..."
+          value={inputValue}
+          onChange={ (e) => setInputValue(e.target.value) }
+        />
         <button type="submit">
-          <BsSearchHeart size={30} color="white" />
+          <BiSearch size={30} color="#FFF" />
         </button>
       </form>
 
@@ -39,24 +93,30 @@ export function Home() {
         </thead>
 
         <tbody id="tbody">
-          <tr className={styles.tr}>
-            <td className={styles.tdLabel} data-label="Moeda">
-              <Link className={styles.link} to={"/detail/btc"}>
-                <span>BitCoin</span> | BTC
-              </Link>
-            </td>
-            <td className={styles.tdLabel} data-label="Mercado">
-              R$ 1903,9
-            </td>
-            <td className={styles.tdLabel} data-label="Preço">
-              R$ 40,9
-            </td>
-            <td className={styles.tdProfit} data-label="Volume">
-              <span>-5.3</span>
-            </td>
-          </tr>
+          {coins.map( coin => (
+            <tr key={coin.name} className={styles.tr}>
+              <td className={styles.tdLabel} data-label="Moeda">
+                <Link className={styles.link} to={`/detail/${coin.symbol}`}>
+                  <span>{coin.name}</span> | {coin.symbol}
+                </Link>
+              </td>
+              <td className={styles.tdLabel}  data-label="Mercado">
+               {coin.formatedMarket}
+              </td>
+              <td className={styles.tdLabel} data-label="Preço">
+                {coin.formatedPrice}
+              </td>
+              <td className={coin.numberDelta >= 0 ? styles.tdProfit : styles.tdLoss}  data-label="Volume">
+                <span>{coin.delta_24h}</span>
+              </td>
+  
+            </tr>
+          ))}
         </tbody>
+
       </table>
+
+
     </main>
-  );
+  )
 }
